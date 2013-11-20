@@ -1,11 +1,10 @@
-require 'yaml'
-
+require 'safe_yaml'
 
 module Erroz
   class DefaultError < StandardError
     def initialize(more_info_message = nil)
       @more_info_message = more_info_message
-      @yaml_file = YAML.load_file('erroz.yml')
+#      @yaml_file = YAML.load_file('erroz.yml')
     end
 
     def error_name
