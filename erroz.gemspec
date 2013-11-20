@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   # Dependencies
   #
   spec.add_dependency "safe_yaml"
+  spec.add_dependency "activesupport"
 
   ##
   # Development dependencies

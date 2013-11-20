@@ -4,37 +4,42 @@ module Erroz
   class DefaultError < StandardError
     def initialize(more_info_message = nil)
       @more_info_message = more_info_message
-#      @yaml_file = YAML.load_file('erroz.yml')
     end
 
     def error_name
-      @error_name ||= "#{self.class}".gsub(/Error/, "").underscore
+      @error_name ||= "#{self.class}".underscore
     end
 
     def status
-      unless @http_status
+      unless @status
         status = "#{error_name}_status"
-        @http_status = I18n.t(status.to_sym, :default => 500)
+        @status = ::Erroz.error_messages[status] || 500
       end
-      @http_status
+      @status
     end
 
     def code
-      error_code = "#{error_name}_code"
-      I18n.t(error_code.to_sym, :default => 0)
+      unless @code
+        error_code = "#{error_name}_code"
+        @code = ::Erroz.error_messages[error_code] || 0
+      end
+      @code
     end
 
     def message
-      I18n.t(error_name, :default => 'an unknown error occurred')
+      unless @message
+        error_message = "#{error_name}_message"
+        @message = ::Erroz.error_messages[error_message] || 'an unknown error occurred'
+      end
+      @message
     end
 
-    def more_info
-      if @more_info_message
-        @more_info_message
-      else
+    def more_info_message
+      unless @more_info_message
         info = "#{error_name}_info"
-        I18n.t(info.to_sym, :default => '')
+        @more_info_message = ::Erroz.error_messages[info] || ''
       end
+      @more_info_message
     end
   end
 end

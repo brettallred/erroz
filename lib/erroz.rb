@@ -1,34 +1,19 @@
-require "configuration"
+require "active_support/inflector"
 require "erroz/default_error"
 require "erroz/active_model_error"
 require "erroz/version"
 
 module Erroz
-  # Settings container for all application configurable settings
-  #
-  def self.settings
-    @settings ||= Erroz::Configuration.new
+  def self.error_messages
+    @error_messages ||= {}
   end
 
-  # Assigns application configurable settings
-  #
-  # Expects a ::Erroz::Configuration object
-  #
-  # The preferred approach for specifiying settings
-  # is to use the configure method
-  def self.settings=(settings)
-    @settings = settings
+  def self.error_messages=(error_messages)
+    @error_messages = error_messages
   end
+  private_class_method :error_messages=
 
-  # Sets configuration settings trough yielding the global configuration object
-  # to a block.
-  #
-  # ==== Example
-  #         # Configure Settings
-  #           ::Erroz.configure do |settings|
-  #             settings.yaml_path     = '123'
-  #           end
-  def self.configure
-    yield settings if block_given?
+  def self.load_error_messages(yaml_config_path)
+    self.error_messages = YAML.load_file(yaml_config_path, :safe => true) 
   end
 end

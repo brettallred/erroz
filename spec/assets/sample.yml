@@ -1,0 +1,9 @@
+
+sample_error_message: "Message"
+sample_error_status: 600
+sample_error_code: 1600
+sample_error_info: "More Info"
+
+sso:
+  v3:
+    error: "hello world"

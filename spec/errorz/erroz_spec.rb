@@ -1,28 +1,17 @@
 require "spec_helper"
 
 describe Erroz do
-
-  describe ".configure" do
-    let (:error_data) {{:error => "I am an error"}}
-
-    it "yields up the configuration object allowing it to be configured" do
-      ::Erroz.configure do |settings|
-        settings.error_data = error_data
-      end
-      expect(::Erroz.settings.error_data).to eq error_data
-    end
-  end
-
-  describe ".settings" do
+  describe ".error_messages" do
     it "defaults to an ::Erroz::Configuration object" do 
-      expect(::Erroz.settings).to be_instance_of ::Erroz::Configuration
+      expect(::Erroz.error_messages).to be_instance_of Hash 
     end
   end
 
-  describe ".settings=" do
+  describe ".yaml_config_path" do
+    let(:yaml_config_path) { "spec/assets/sample.yml" } 
     it "allows settings to be be manually set" do 
-      ::Erroz.settings = ::Hash.new 
-      expect(::Erroz.settings).to be_instance_of Hash
+      ::Erroz.load_error_messages(yaml_config_path)
+      expect(::Erroz.error_messages).to have_key 'sso'
     end
   end
 end
